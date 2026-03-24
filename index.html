@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI Sales Page Cashflow System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --cyan: #00C9A7;
+    --cyan-dark: #00a98c;
+    --cyan-light: rgba(0,201,167,0.10);
+    --charcoal: #1A1A1A;
+    --gray-bg: #F6F7FB;
+    --white: #ffffff;
+    --text-muted: #6B7280;
+    --red-strike: #D94F4F;
+    --border: rgba(0,201,167,0.18);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--white);
+    color: var(--charcoal);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+  h1,h2,h3,h4 { font-family: 'Syne', sans-serif; }
+
+  /* ── UTILITIES ── */
+  .container { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+  .container-wide { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+  .section { padding: 96px 0; }
+  .section-alt { background: var(--gray-bg); }
+  .accent { color: var(--cyan); }
+
+  /* CTA BUTTONS */
+  .btn {
+    display: inline-block;
+    background: var(--cyan);
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 15px 32px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: background 0.22s, transform 0.18s, box-shadow 0.22s;
+    line-height: 1.3;
+    white-space: nowrap;
+  }
+  .btn:hover { background: var(--cyan-dark); transform: translateY(-2px); box-shadow: 0 10px 32px rgba(0,201,167,0.28); }
+  .btn-outline {
+    background: transparent;
+    border: 2px solid var(--cyan);
+    color: var(--cyan);
+  }
+  .btn-outline:hover { background: var(--cyan); color: #fff; }
+  .btn-lg { font-size: 1.08rem; padding: 18px 40px; }
+  .btn-wrap { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+  .btn-center { display: flex; justify-content: center; margin-top: 40px; }
+  .trust-note {
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-top: 14px;
+    letter-spacing: 0.01em;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    background: var(--charcoal);
+    overflow: hidden;
+    padding: 110px 0 90px;
+  }
+  .hero-canvas {
+    position: absolute; inset: 0;
+    opacity: 0.55;
+  }
+  .hero-content { position: relative; z-index: 2; }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(0,201,167,0.15);
+    border: 1px solid rgba(0,201,167,0.35);
+    color: var(--cyan);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 100px;
+    margin-bottom: 28px;
+  }
+  .hero h1 {
+    font-size: clamp(2.1rem, 5vw, 3.4rem);
+    color: var(--cyan);
+    line-height: 1.18;
+    margin-bottom: 26px;
+    max-width: 820px;
+  }
+  .hero-sub {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: rgba(255,255,255,0.82);
+    max-width: 660px;
+    margin-bottom: 20px;
+    font-weight: 400;
+  }
+  .hero-support {
+    font-size: 0.92rem;
+    color: rgba(255,255,255,0.48);
+    margin-bottom: 44px;
+    font-style: italic;
+  }
+
+  /* Abstract SVG hero background */
+  .geo-bg { width: 100%; height: 100%; }
+
+  /* ── SECTION HEADINGS ── */
+  .section-tag {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-size: clamp(1.7rem, 3.5vw, 2.5rem);
+    color: var(--charcoal);
+    line-height: 1.22;
+    margin-bottom: 20px;
+  }
+  .section-title .accent { color: var(--cyan); }
+  .section-title-white { color: #fff; }
+  .section-intro {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    max-width: 640px;
+    margin: 0 auto 56px;
+    text-align: center;
+  }
+  .centered { text-align: center; }
+
+  /* ── VSL SECTION ── */
+  .vsl-frame {
+    background: var(--charcoal);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 24px 72px rgba(0,0,0,0.18);
+    position: relative;
+  }
+  .vsl-placeholder {
+    background: linear-gradient(135deg, #0e1a24 0%, #0a2b25 60%, #041a16 100%);
+    aspect-ratio: 16/9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .play-btn {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: var(--cyan);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 0 12px rgba(0,201,167,0.15);
+  }
+  .play-btn:hover { transform: scale(1.08); box-shadow: 0 0 0 18px rgba(0,201,167,0.10); }
+  .play-btn svg { margin-left: 6px; }
+  .vsl-label { color: rgba(255,255,255,0.55); font-size: 0.88rem; letter-spacing: 0.06em; }
+
+  /* ── FOUNDER ── */
+  .founder-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 64px;
+    align-items: center;
+  }
+  .founder-img-box {
+    background: linear-gradient(135deg, #e8faf7 0%, #d0f5ee 100%);
+    border-radius: 16px;
+    aspect-ratio: 4/5;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .founder-img-box svg { opacity: 0.35; }
+  .founder-badge {
+    position: absolute; bottom: 20px; left: 20px;
+    background: var(--cyan);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 6px;
+    letter-spacing: 0.04em;
+  }
+  .founder-text h3 {
+    font-size: 1.9rem;
+    color: var(--charcoal);
+    margin-bottom: 18px;
+    line-height: 1.25;
+  }
+  .founder-text p { color: #4B5563; margin-bottom: 14px; font-size: 1.02rem; }
+
+  /* ── PROBLEM ── */
+  .problem-list {
+    list-style: none;
+    max-width: 720px;
+    margin: 0 auto 44px;
+  }
+  .problem-list li {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    font-size: 1.05rem;
+    color: #374151;
+  }
+  .problem-list li:last-child { border-bottom: none; }
+  .prob-icon {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(217,79,79,0.1);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .closing-line {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    text-align: center;
+    color: var(--charcoal);
+    max-width: 640px;
+    margin: 32px auto 0;
+    padding: 28px;
+    background: var(--cyan-light);
+    border-left: 4px solid var(--cyan);
+    border-radius: 0 10px 10px 0;
+    text-align: left;
+  }
+
+  /* ── OFFER ── */
+  .offer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+  .offer-card {
+    background: var(--white);
+    border: 1px solid rgba(0,0,0,0.07);
+    border-radius: 14px;
+    padding: 28px 26px;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  }
+  .offer-card:hover { border-color: var(--cyan); box-shadow: 0 8px 32px rgba(0,201,167,0.10); transform: translateY(-3px); }
+  .offer-icon {
+    width: 44px; height: 44px;
+    background: var(--cyan-light);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+    color: var(--cyan);
+    font-size: 1.3rem;
+  }
+  .offer-card h4 { font-size: 1.02rem; font-weight: 700; color: var(--charcoal); margin-bottom: 8px; }
+  .offer-card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
+
+  /* ── TESTIMONIALS ── */
+  .testi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+  .testi-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 32px 28px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    border: 1px solid rgba(0,0,0,0.05);
+    position: relative;
+  }
+  .testi-card::before {
+    content: '"';
+    font-family: 'Syne', sans-serif;
+    font-size: 5rem;
+    line-height: 1;
+    color: var(--cyan);
+    opacity: 0.18;
+    position: absolute;
+    top: 16px; left: 22px;
+  }
+  .testi-card p {
+    font-size: 0.97rem;
+    color: #374151;
+    line-height: 1.7;
+    margin-bottom: 22px;
+    position: relative;
+    z-index: 1;
+  }
+  .testi-author {
+    display: flex; align-items: center; gap: 14px;
+  }
+  .avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .testi-name { font-weight: 600; font-size: 0.88rem; color: var(--charcoal); }
+  .testi-loc { font-size: 0.8rem; color: var(--text-muted); }
+  .stars { color: var(--cyan); font-size: 0.85rem; margin-bottom: 14px; }
+
+  /* ── BONUSES ── */
+  .bonus-list {
+    counter-reset: bonus;
+    list-style: none;
+    max-width: 780px;
+    margin: 0 auto 48px;
+  }
+  .bonus-list li {
+    counter-increment: bonus;
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 20px;
+    align-items: start;
+    padding: 24px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .bonus-list li:last-child { border-bottom: none; }
+  .bonus-num {
+    width: 46px; height: 46px;
+    background: var(--cyan);
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .bonus-content h4 { font-size: 1.02rem; font-weight: 700; color: var(--charcoal); margin-bottom: 5px; }
+  .bonus-content p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
+  .bonus-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--cyan);
+    background: var(--cyan-light);
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-top: 6px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── VALUE STACK ── */
+  .value-table {
+    max-width: 680px;
+    margin: 0 auto 48px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.09);
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+  .value-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 28px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    font-size: 0.98rem;
+    background: var(--white);
+    transition: background 0.15s;
+  }
+  .value-row:hover { background: var(--gray-bg); }
+  .value-row:last-child { border-bottom: none; }
+  .value-row.total-row {
+    background: var(--charcoal);
+    color: rgba(255,255,255,0.85);
+    font-weight: 600;
+  }
+  .value-row.price-row {
+    background: var(--cyan);
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+  }
+  .value-amount { font-weight: 700; color: var(--charcoal); white-space: nowrap; }
+  .value-row.total-row .value-amount { color: #fff; }
+  .value-row.price-row .value-amount { color: #fff; font-size: 1.3rem; }
+  .value-name { color: #374151; }
+  .value-row.total-row .value-name { color: rgba(255,255,255,0.7); }
+  .value-row.price-row .value-name { color: rgba(255,255,255,0.9); }
+
+  /* ── PRICE SECTION ── */
+  .price-box {
+    max-width: 580px;
+    margin: 0 auto;
+    text-align: center;
+    background: var(--white);
+    border-radius: 20px;
+    padding: 52px 40px;
+    box-shadow: 0 16px 64px rgba(0,0,0,0.1);
+    border: 2px solid var(--border);
+  }
+  .price-original {
+    font-size: 1.4rem;
+    color: var(--text-muted);
+    text-decoration: line-through;
+    text-decoration-color: var(--red-strike);
+    margin-bottom: 4px;
+  }
+  .price-main {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 8vw, 4.8rem);
+    font-weight: 800;
+    color: var(--cyan);
+    line-height: 1;
+    margin-bottom: 20px;
+  }
+  .price-copy {
+    font-size: 0.98rem;
+    color: #4B5563;
+    max-width: 420px;
+    margin: 0 auto 36px;
+    line-height: 1.7;
+  }
+
+  /* ── GUARANTEE / NO UPSELL ── */
+  .guarantee-box {
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--charcoal);
+    border-radius: 20px;
+    padding: 52px 48px;
+    text-align: center;
+    color: rgba(255,255,255,0.85);
+    position: relative;
+    overflow: hidden;
+  }
+  .guarantee-box::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(0,201,167,0.08);
+  }
+  .guarantee-box h2 { color: var(--cyan); margin-bottom: 22px; }
+  .guarantee-box p { margin-bottom: 16px; line-height: 1.8; font-size: 1.01rem; }
+  .guarantee-icon {
+    width: 64px; height: 64px;
+    background: var(--cyan-light);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 28px;
+    color: var(--cyan);
+    font-size: 1.8rem;
+  }
+
+  /* ── URGENCY ── */
+  .urgency-inner {
+    max-width: 760px; margin: 0 auto; text-align: center;
+  }
+  .urgency-timer {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 40px 0;
+    flex-wrap: wrap;
+  }
+  .timer-block {
+    background: var(--charcoal);
+    color: var(--cyan);
+    border-radius: 12px;
+    padding: 20px 26px;
+    min-width: 80px;
+    text-align: center;
+  }
+  .timer-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 800;
+    line-height: 1;
+    display: block;
+    min-width: 2ch;
+  }
+  .timer-label { font-size: 0.72rem; color: rgba(255,255,255,0.45); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 6px; display: block; }
+  .timer-colon {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--charcoal);
+    display: flex; align-items: center;
+    padding-bottom: 10px;
+  }
+
+  /* ── WAITLIST ── */
+  .waitlist-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .waitlist-visual {
+    background: linear-gradient(135deg, #e8faf7, #d0f5ee);
+    border-radius: 16px;
+    aspect-ratio: 1;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .waitlist-content h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); color: var(--charcoal); margin-bottom: 20px; }
+  .waitlist-content p { color: #4B5563; margin-bottom: 16px; font-size: 0.98rem; }
+  .waitlist-note {
+    background: rgba(217,79,79,0.07);
+    border-left: 3px solid var(--red-strike);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    font-size: 0.9rem;
+    color: #374151;
+    margin-bottom: 30px;
+    line-height: 1.6;
+  }
+
+  /* ── FAQ ── */
+  .faq-list { max-width: 740px; margin: 0 auto 48px; }
+  .faq-item {
+    border: 1px solid rgba(0,0,0,0.07);
+    border-radius: 12px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .faq-item:hover { border-color: var(--border); }
+  .faq-q {
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 22px 26px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--charcoal);
+    gap: 16px;
+  }
+  .faq-chevron { color: var(--cyan); font-size: 1.3rem; transition: transform 0.25s; flex-shrink: 0; }
+  .faq-a {
+    display: none;
+    padding: 0 26px 22px;
+    font-size: 0.96rem;
+    color: #4B5563;
+    line-height: 1.75;
+  }
+  .faq-item.open .faq-a { display: block; }
+  .faq-item.open .faq-chevron { transform: rotate(45deg); }
+  .faq-item.open { border-color: var(--cyan); }
+
+  /* ── SECOND VIDEO SECTION ── */
+  .video2-label { font-size: 0.88rem; color: rgba(255,255,255,0.45); letter-spacing: 0.05em; text-align: center; margin-top: 16px; }
+
+  /* ── FINAL CTA ── */
+  .final-cta {
+    background: linear-gradient(135deg, var(--charcoal) 0%, #0a2d28 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .final-cta::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: rgba(0,201,167,0.06);
+  }
+  .final-cta::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -80px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(0,201,167,0.05);
+  }
+  .final-cta .container { position: relative; z-index: 1; text-align: center; }
+  .final-cta h2 { color: var(--cyan); font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 20px; }
+  .final-cta p { color: rgba(255,255,255,0.72); font-size: 1.05rem; max-width: 600px; margin: 0 auto 40px; line-height: 1.75; }
+
+  /* ── FOOTER BAR ── */
+  .footer-bar {
+    background: var(--charcoal);
+    padding: 22px 24px;
+    text-align: center;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.3);
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  /* ── STICKY NAV CTA ── */
+  .sticky-nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 999;
+    background: rgba(26,26,26,0.96);
+    backdrop-filter: blur(10px);
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transform: translateY(-100%);
+    transition: transform 0.3s;
+    border-bottom: 1px solid rgba(0,201,167,0.15);
+  }
+  .sticky-nav.visible { transform: translateY(0); }
+  .sticky-logo { font-family: 'Syne', sans-serif; font-weight: 800; color: var(--cyan); font-size: 0.9rem; letter-spacing: 0.04em; }
+  .sticky-btn {
+    font-size: 0.82rem;
+    padding: 9px 22px;
+  }
+
+  /* ── DIVIDER ── */
+  .divider { height: 1px; background: rgba(0,0,0,0.06); max-width: 640px; margin: 0 auto; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(28px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+  .fade-up { animation: fadeUp 0.7s ease both; }
+  .delay-1 { animation-delay: 0.12s; }
+  .delay-2 { animation-delay: 0.24s; }
+  .delay-3 { animation-delay: 0.36s; }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.65s ease, transform 0.65s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── MOBILE ── */
+  @media (max-width: 720px) {
+    .section { padding: 64px 0; }
+    .founder-grid { grid-template-columns: 1fr; gap: 36px; }
+    .founder-img-box { aspect-ratio: 3/2; }
+    .waitlist-grid { grid-template-columns: 1fr; gap: 36px; }
+    .waitlist-visual { aspect-ratio: 16/9; }
+    .btn-lg { font-size: 0.95rem; padding: 16px 26px; }
+    .value-row { padding: 16px 20px; font-size: 0.88rem; }
+    .price-box { padding: 36px 24px; }
+    .guarantee-box { padding: 40px 28px; }
+    .timer-num { font-size: 1.9rem; }
+    .timer-block { padding: 16px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── STICKY NAV ── -->
+<nav class="sticky-nav" id="stickyNav">
+  <span class="sticky-logo">AI SALES CASHFLOW SYSTEM</span>
+  <a href="#price" class="btn sticky-btn">Get Access — ₦10,000</a>
+</nav>
+
+<!-- ══════════════════════════════
+  1. HERO
+══════════════════════════════ -->
+<section class="hero">
+  <canvas class="hero-canvas" id="heroCanvas"></canvas>
+  <div class="container hero-content">
+    <span class="hero-badge fade-up">🔥 Limited Launch Price — ₦10,000</span>
+    <h1 class="fade-up delay-1">Your Business Is Losing Sales Every Day You Don't Have This</h1>
+    <p class="hero-sub fade-up delay-2">Learn how to build a complete online sales system — landing page, sales copy, and payment collection — using free AI tools. No developer. No expensive software. No technical experience needed.</p>
+    <p class="hero-support fade-up delay-2">The page you're reading right now was built using the exact same system you're about to learn.</p>
+    <div class="btn-wrap fade-up delay-3">
+      <a href="#price" class="btn btn-lg">Yes, I Want This System — ₦10,000</a>
+      <a href="#vsl" class="btn btn-outline btn-lg">▶ Watch How It Works</a>
+    </div>
+    <p class="trust-note" style="color:rgba(255,255,255,0.35);margin-top:20px;">No hidden fees. No upsells. Everything you see on this page is what you get.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+  2. VSL
+══════════════════════════════ -->
+<section class="section" id="vsl">
+  <div class="container">
+    <div class="centered reveal">
+      <span class="section-tag">Explanation Video</span>
+      <h2 class="section-title">Watch This Short <span class="accent">Explanation</span></h2>
+      <p class="section-intro">Understand exactly how this system works, what you'll learn, and why it's already helping business owners collect payments online.</p>
+    </div>
+    <div class="vsl-frame reveal">
+      <div class="vsl-placeholder">
+        <!-- Abstract grid visual via canvas -->
+        <canvas id="vslCanvas" style="position:absolute;inset:0;width:100%;height:100%;opacity:0.4;"></canvas>
+        <div class="play-btn" onclick="alert('Embed your video URL here.')">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <span class="vsl-label" style="position:relative;z-index:1;">Your sales explanation video goes here</span>
+      </div>
+    </div>
+    <div class="btn-center reveal">
+      <div>
+        <a href="#price" class="btn btn-lg">Start Building My System</a>
+        <p class="trust-note">No hidden fees. No upsells. Everything you see on this page is what you get.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+  3. FOUNDER CREDIBILITY
+══════════════════════════════ -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="centered reveal" style="margin-bottom:56px;">
+      <span class="section-tag">About the System</span>
+      <h2 class="section-title">Why You Can <span class="accent">Trust This System</span></h2>
+    </div>
+    <div class="founder-grid">
+      <div class="founder-img-box reveal">
+        <svg width="180" height="180" viewBox="0 0 180 180" fill="none">
+          <circle cx="90" cy="90" r="80" stroke="#00C9A7" stroke-width="1.5" stroke-dasharray="8 6" opacity="0.6"/>
+          <circle cx="90" cy="90" r="55" stroke="#00C9A7" stroke-width="1" opacity="0.3"/>
+          <polygon points="90,30 130,90 90,150 50,90" stroke="#00C9A7" stroke-width="1.5" fill="none" opacity="0.5"/>
+          <circle cx="90" cy="90" r="12" fill="#00C9A7" opacity="0.6"/>
+        </svg>
+        <span class="founder-badge">Upload Your Photo Here</span>
+      </div>
+      <div class="founder-text reveal">
+        <h3>Built by someone who knows what it costs to figure this out the hard way.</h3>
+        <p>Hi, I'm <strong>[Founder Name]</strong>.</p>
+        <p>I've spent years helping businesses create simple systems that attract customers and generate sales consistently online.</p>
+        <p>This landing page is an example of the exact system I teach — built entirely with free AI tools, structured for conversions, and connected to a payment gateway.</p>
+        <p>My goal: help business owners build working sales pages without expensive tools or complicated tech — so they can start generating revenue, not excuses.</p>
+        <br/>
+        <a href="#price" class="btn">Get Access Now</a>
+        <p class="trust-note" style="text-align:left;margin-top:12px;">No hidden fees. No upsells. Everything you see on this page is what you get.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+  4. PROBLEM
+══════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="centered reveal" style="margin-bottom:48px;">
+      <span class="section-tag">Does This Sound Like You?</span>
+      <h2 class="section-title"><span class="accent">Sound Familiar?</span></h2>
+    </div>
+    <ul class="problem-list">
+      <li class="reveal">
+        <div class="prob-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="7" fill="#D94F4F" opacity="0.8"/><path d="M4 7h6M7 4v6" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <span>You have a great product — but no system to sell it consistently, and every month feels like starting from zero.</span>
+      </li>
+      <li class="reveal">
+        <div class="prob-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="7" fill="#D94F4F" opacity="0.8"/><path d="M4 7h6M7 4v6" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <span>You've tried sharing links and posting on social media, but sales are unpredictable and exhausting.</span>
+      </li>
+      <li class="reveal">
+        <div class="prob-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="7" fill="#D94F4F" opacity="0.8"/><path d="M4 7h6M7 4v6" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <span>You don't have ₦500,000 to pay a developer for a website that might not even convert.</span>
+      </li>
+      <li class="reveal">
+        <div class="prob-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="7" fill="#D94F4F" opacity="0.8"/><path d="M4 7h6M7 4v6" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <span>Every time you look into "funnels" or "landing pages," it feels overwhelming — too many tools, too much jargon.</span>
+      </li>
+      <li class="reveal">
+        <div class="prob-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="7" fill="#D94F4F" opacity="0.8"/><path d="M4 7h6M7 4v6" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <span>You're watching other businesses collect payments online and wondering why it isn't working for you yet.</span>
+      </li>
+    </ul>
+    <div class="closing-line reveal">
+      None of that is your fault. You were never shown the right system. Until now.
+    </div>
+    <div class="btn-center reveal">
+      <div>
+        <a href="#price" class="btn btn-lg">Learn The System</a>
+        <p class="trust-note">No hidden fees. No upsells. Everything you see on this page is what you get.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+  5. CORE OFFER
+══════════════════════════════ -->
+<section class="section section-alt" id="offer">
+  <div class="container">
+    <div class="centered reveal" style="margin-bottom:52px;">
+      <span class="section-tag">What You're Getting</span>
+      <h2 class="section-title">Here's Exactly <span class="accent">What You're Getting</span></h2>
+    </div>
+    <div class="offer-grid">
+      <div class="offer-card reveal">
+        <div class="offer-icon">⚡</div>
+        <h4>Build in Hours, Not Weeks</h4>
+        <p>Use free AI tools that write and design your landing page for you — no waiting, no guessing.</p>
+      </div>
+      <div class="offer-card reveal">
+        <div class="offer-icon">✍️</div>
+        <h4>Sales Copy That Converts</h4>
+        <p>Learn the exact prompts that make AI write persuasive copy specific to your offer — tested and proven.</p>
+      </div>
+      <div class="offer-card reveal">
+        <div class="offer-icon">📐</div>
+        <h4>Structure for Maximum Sales</h4>
+        <p>Know what goes where and exactly why it works — no guesswork, just a proven framework.</p>
+      </div>
+      <div class="offer-card reveal">
+        <div class="offer-icon">🎨</div>
+        <h4>Design Without a Designer</h4>
+        <p>Professional layouts with zero technical skills required. If you can type, you can build this.</p>
+      </div>
+      <div class="offer-card reveal">
+        <div class="offer-icon">💳</div>
+        <h4>Connect Paystack & Collect Payments</h4>
+        <p>Your page goes live, your Paystack is connected, and your business starts earning — step by step.</p>
+      </div>
+      <div class="offer-card reveal">
+        <div class="offer-icon">🔁</div>
+        <h4>A System That Works Offline</h4>
+        <p>Own a complete online sales machine — one that generates revenue even while you sleep.</p>
+      </div>
+    </div>
+    <div class="btn-center reveal">
+      <div>
+        <a href="#price" class="btn btn-lg">Get The Full System</a>
+        <p class="trust-note">No hidden fees. No upsells. Everything you see on this page is what you get.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+  6. SOCIAL PROOF
+══════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="centered reveal" style="margin-bottom:52px;">
+      <span class="section-tag">Real Results</span>
+      <h2 class="section-title">What Business Owners <span class="accent">Are Saying</span></h2>
+    </div>
+    <div class="testi-grid">
+      <!-- Card 1 -->
+      <div class="testi-card reveal">
+        <div class="stars">★★★★★</div>
+        <p>"I had no idea I could build something this professional without a developer. The AI prompts alone were worth it."</p>
+        <div class="testi-author">
+          <div class="avatar">
+            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" width="44" height="44">
+              <rect width="44" height="44" fill="#e8faf7"/>
+              <circle cx="22" cy="22" r="14" stroke="#00C9A7" stroke-width="1.2" fill="none" stroke-dasharray="5 4"/>
+              <polygon points="22,10 32,22 22,34 12,22" fill="#00C9A7" opacity="0.25"/>
+              <circle cx="22" cy="22" r="4" fill="#00C9A7" opacity="0.6"/>
+            </svg>
+          </div>
+          <div>
+            <div class="testi-name">Small Business Owner</div>
+            <div class="testi-loc">Lagos, Nigeria</div>
+          </div>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="testi-card reveal">
+        <div class="stars">★★★★★</div>
+        <p>"I went from having no online presence to collecting payments in under a week. This system is genuinely different."</p>
+        <div class="testi-author">
+          <div class="avatar">
+            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" width="44" height="44">
+              <rect width="44" height="44" fill="#f0faf8"/>
+              <rect x="10" y="10" width="24" height="24" rx="4" stroke="#00C9A7" stroke-width="1.2" fill="none" transform="rotate(15 22 22)"/>
+              <circle cx="22" cy="22" r="5" fill="#00C9A7" opacity="0.5"/>
+            </svg>
+          </div>
+          <div>
+            <div class="testi-name">Service Provider</div>
+            <div class="testi-loc">Abuja, Nigeria</div>
+          </div>
+        </div>
+      </div>
+      <!-- Card 3 -->
+      <div class="testi-card reveal">
+        <div class="stars">★★★★★</div>
+        <p>"Everything was explained clearly. Even someone with zero tech experience can follow this. I'm already getting sales."</p>
+        <div class="testi-author">
+          <div class="avatar">
+            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" width="44" height="44">
+              <rect width="44" height="44" fill="#e8faf7"/>
+              <polygon points="22,8 38,36 6,36" stroke="#00C9A7" stroke-width="1.2" fill="none" opacity="0.7"/>
+              <circle cx="22" cy="24" r="5" fill="#00C9A7" opacity="0.4"/>
+            </svg>
+          </div>
+          <div>
+            <div class="testi-name">Online Seller</div>
+            <div class="testi-loc">Port Harcourt, Nigeria</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="trust-note reveal" style="margin-top:28px;font-size:0.9rem;">No hidden fees. No upsells. Everything you see on this page is what you get.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+  7. BONUSES
+══════════════════════════════ -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="centered reveal" style="margin-bottom:16px;">
+      <span class="section-tag">Included Bonuses</span>
+      <h2 class="section-title">Everything Included — <span class="accent">Nothing Held Back</span></h2>
+    </div>
+    <p class="section-intro reveal">Most programs sell these as separate paid upgrades. You get all of it today at no extra cost.</p>
+    <ol class="bonus-list">
+      <li class="reveal">
+        <div class="bonus-num">1</div>
+        <div class="bonus-content">
+          <h4>Offer Creation Framework</h4>
+          <p>Turn any product or service into an irresistible offer that people feel compelled to act on immediately.</p>
+          <span class="bonus-tag">FREE BONUS</span>
+        </div>
+      </li>
+      <li class="reveal">
+        <div class="bonus-num">2</div>
+        <div class="bonus-content">
+          <h4>AI Sales Copy Prompt Library</h4>
+          <p>30+ tested prompts that generate persuasive copy instantly — for any niche, any offer, any audience.</p>
+          <span class="bonus-tag">FREE BONUS</span>
+        </div>
+      </li>
+      <li class="reveal">
+        <div class="bonus-num">3</div>
+        <div class="bonus-content">
+          <h4>Landing Page Blueprint</h4>
+          <p>The exact layout structure used in high-converting pages — including the one you're reading right now.</p>
+          <span class="bonus-tag">FREE BONUS</span>
+        </div>
+      </li>
+      <li class="reveal">
+        <div class="bonus-num">4</div>
+        <div class="bonus-content">
+          <h4>1-on-1 Business Consultation Session</h4>
+          <p>Ask your specific questions and get clarity on your implementation in real time. Stuck on a step? This is where you get unstuck.</p>
+          <span class="bonus-tag">FREE BONUS — MOST VALUABLE</span>
+        </div>
+      </li>
+      <li class="reveal">
+        <div class="bonus-num">5</div>
+        <div class="bonus-content">
+          <h4>Marketing Prompt Templates</h4>
+          <p>Ready-to-use prompts for ads, emails, and social media — extend your sales system beyond your landing page.</p>
+          <span class="bonus-tag">FREE BONUS</span>
+        </div>
+      </li>
+    </ol>
+    <div class="btn-center reveal">
+      <div>
+        <a href="#price" class="btn btn-lg">Claim Everything Now</a>
+        <p class="trust-note">No hidden fees. No upsells. Everything you see on this page is what you get.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+  8. VALUE STACK
+══════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="centered reveal" style="margin-bottom:48px;">
+      <span class="section-tag">Total Value</span>
+      <h2 class="section-title">What This Is Actually <span class="accent">Worth</span></h2>
+    </div>
+    <div class="value-table reveal">
+      <div class="value-row"><span class="value-name">AI Sales Page Cashflow System</span><span class="value-amount">₦50,000</span></div>
+      <div class="value-row"><span class="value-name">Offer Creation Framework</span><span class="value-amount">₦10,000</span></div>
+      <div class="value-row"><span class="value-name">AI Sales Copy Prompt Library</span><span class="value-amount">₦8,000</span></div>
+      <div class="value-row"><span class="value-name">Landing Page Blueprint</span><span class="value-amount">₦5,000</span></div>
+      <div class="value-row"><span class="value-name">1-on-1 Business Consultation</span><span class="value-amount">₦15,000</span></div>
+      <div class="value-row"><span class="value-name">Marketing Prompt Templates</span><span class="value-amount">₦7,000</span></div>
+      <div class="value-row total-row"><span class="value-name">Total Real Value</span><span class="value-amount">₦95,000</span></div>
+      <div class="value-row price-row"><span class="value-name">✅ Your Price Today</span><span class="value-amount">₦10,000</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+  9. PRICE
+══════════════════════════════ -->
+<section class="section section-alt" id="price">
+  <div class="container">
+    <div class="centered reveal" style="margin-bottom:40px;">
+      <span class="section-tag">Your Investment</span>
+      <h2 class="section-title">One Decision. <span class="accent">One Payment. Done.</span></h2>
+    </div>
+    <div class="price-box reveal">
+      <p class="price-original">₦95,000</p>
+      <div class="price-main">₦10,000</div>
+      <p class="price-copy">For the cost of a meal out, you get a complete system that could generate ₦100,000+ for your business. There is no logical reason to wait.</p>
+      <a href="#" class="btn btn-lg" onclick="alert('Connect your Paystack payment link here.')">Get Everything Now — Only ₦10,000</a>
+      <p class="trust-note" style="margin-top:16px;">One-time payment. No upsells. Instant access. Everything on this page is everything you get.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+  10. NO UPSELL GUARANTEE
+══════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="guarantee-box reveal">
+      <div class="guarantee-icon">🔒</div>
+      <h2>A Promise Most Online Programs Won't Make</h2>
+      <p>Once you pay ₦10,000, you will never be asked to pay again.</p>
+      <p>No premium version. No "complete" course sold separately. No upsells. What you see on this page is everything you get — delivered immediately and completely.</p>
+      <p>If that sounds refreshing, it's because it's rare. And it's intentional.</p>
+      <br/>
+      <a href="#price" class="btn btn-lg">Join Now</a>
+      <p class="trust-note" style="margin-top:16px;color:rgba(255,255,255,0.35);">No hidden fees. No upsells. Everything you see on this page is what you get.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+  11. URGENCY
+══════════════════════════════ -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="urgency-inner">
+      <div class="reveal">
+        <span class="section-tag">⚠️ Limited Launch Window</span>
+        <h2 class="section-title">This Price <span class="accent">Will Not Last</span></h2>
+        <p style="color:#4B5563;max-width:600px;margin:0 auto 16px;font-size:1.02rem;line-height:1.75;">The ₦10,000 price exists to get this system into the hands of serious business owners quickly. When this launch period closes, the price returns to ₦80,000 — and it won't come back down.</p>
+        <p style="color:#4B5563;max-width:500px;margin:0 auto;font-size:0.96rem;">This is not a marketing trick. It's a one-time window. When it's gone, it's gone.</p>
+      </div>
+      <div class="urgency-timer reveal" id="timerSection">
+        <div class="timer-block">
+          <span class="timer-num" id="tHours">23</span>
+          <span class="timer-label">Hours</span>
+        </div>
+        <div class="timer-colon">:</div>
+        <div class="timer-block">
+          <span class="timer-num" id="tMins">59</span>
+          <span class="timer-label">Minutes</span>
+        </div>
+        <div class="timer-colon">:</div>
+        <div class="timer-block">
+          <span class="timer-num" id="tSecs">59</span>
+          <span class="timer-label">Seconds</span>
+        </div>
+      </div>
+      <div class="btn-center reveal">
+        <div>
+          <a href="#price" class="btn btn-lg">Secure My Access</a>
+          <p class="trust-note">No hidden fees. No upsells. Everything you see on this page is what you get.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+  12. WAITLIST / RESERVE
+══════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="waitlist-grid">
+      <div class="waitlist-visual reveal">
+        <canvas id="waitCanvas" style="position:absolute;inset:0;width:100%;height:100%;border-radius:16px;"></canvas>
+        <!-- Digital timer visual -->
+        <div style="position:relative;z-index:1;text-align:center;">
+          <div style="font-family:'Syne',sans-serif;font-size:3.5rem;font-weight:800;color:#00C9A7;line-height:1;">48</div>
+          <div style="font-family:'Outfit',sans-serif;font-size:0.9rem;color:#00a98c;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;margin-top:4px;">Hour Reserve</div>
+        </div>
+      </div>
+      <div class="waitlist-content reveal">
+        <span class="section-tag">Reserve Your Price</span>
+        <h2>Can't Pay Right Now? Reserve Your ₦10,000 Price For 48 Hours</h2>
+        <p>If you're serious about this but need 48 hours to arrange payment — this is for you. Reserve your spot now and lock in the ₦10,000 price.</p>
+        <div class="waitlist-note">
+          ⚠️ <strong>Important:</strong> This is not a waitlist. This is not for people who are "maybe interested." Only reserve if you intend to complete payment within 48 hours.
+        </div>
+        <a href="#" onclick="alert('Connect your reservation form or link here.')" class="btn btn-lg">Reserve My Spot (48 Hours)</a>
+        <p class="trust-note" style="text-align:left;margin-top:12px;">No hidden fees. No upsells. Everything you see on this page is what you get.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+  13. FAQ
+══════════════════════════════ -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="centered reveal" style="margin-bottom:52px;">
+      <span class="section-tag">Questions & Answers</span>
+      <h2 class="section-title">Frequently Asked <span class="accent">Questions</span></h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Do I need technical skills?
+          <span class="faq-chevron">+</span>
+        </button>
+        <div class="faq-a">No. This system was designed specifically for people with no technical background. If you can type a message on your phone, you can follow this system — every step is explained in plain, simple language.</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Do I need paid AI tools?
+          <span class="faq-chevron">+</span>
+        </button>
+        <div class="faq-a">No. The entire system is built using free AI tools that are available to everyone. You will not need to pay for any software to implement what you learn.</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Will I be asked to pay for another course?
+          <span class="faq-chevron">+</span>
+        </button>
+        <div class="faq-a">Absolutely not. Once you access this program, there are no upsells, no premium versions, and no hidden upgrades. Everything is delivered on day one.</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Can complete beginners follow this system?
+          <span class="faq-chevron">+</span>
+        </button>
+        <div class="faq-a">Yes. The system was built for beginners. Each step is explained clearly, in plain language, with no assumed knowledge. If you've never built a page before, this is where you start.</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What if I have questions while implementing?
+          <span class="faq-chevron">+</span>
+        </button>
+        <div class="faq-a">Your bonus consultation session exists exactly for this. You can ask your specific questions, get clarity on your implementation, and move forward with confidence. No one gets left stuck.</div>
+      </div>
+    </div>
+    <div class="btn-center reveal">
+      <div>
+        <a href="#price" class="btn btn-lg">Get The System Now</a>
+        <p class="trust-note">No hidden fees. No upsells. Everything you see on this page is what you get.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+  14. SECOND VIDEO / EXAMPLES
+══════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="centered reveal" style="margin-bottom:40px;">
+      <span class="section-tag">See It In Action</span>
+      <h2 class="section-title">Types of Landing Pages <span class="accent">You Will Learn to Create</span></h2>
+      <p class="section-intro">Explore the different page structures you'll master — from simple product pages to full sales funnels.</p>
+    </div>
+    <div class="vsl-frame reveal">
+      <div class="vsl-placeholder">
+        <canvas id="vid2Canvas" style="position:absolute;inset:0;width:100%;height:100%;opacity:0.4;"></canvas>
+        <div class="play-btn" onclick="alert('Embed your examples video URL here.')">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <span class="vsl-label" style="position:relative;z-index:1;">Landing page examples video goes here</span>
+      </div>
+    </div>
+    <div class="btn-center reveal">
+      <div>
+        <a href="#price" class="btn btn-lg">Start Building My Page</a>
+        <p class="trust-note">No hidden fees. No upsells. Everything you see on this page is what you get.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+  15. FINAL CTA
+══════════════════════════════ -->
+<section class="section final-cta">
+  <div class="container">
+    <span class="section-tag" style="color:rgba(0,201,167,0.7);">Make The Decision</span>
+    <h2>Your Sales System Is <br>One Decision Away</h2>
+    <p>Every day without a working sales page is a day your business leaves money on the table. You now know exactly what this system does, what you'll learn, and what it costs.<br/>The only thing left is the decision.</p>
+    <a href="#price" class="btn btn-lg" style="font-size:1.08rem;padding:20px 44px;">Build My Sales System Now — ₦10,000</a>
+    <p class="trust-note" style="color:rgba(255,255,255,0.3);margin-top:18px;">One-time payment. No upsells. Instant access. Everything on this page is everything you get.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer-bar">
+  © 2025 AI Sales Page Cashflow System. All rights reserved. &nbsp;|&nbsp; Results may vary. Individual outcomes depend on effort and implementation.
+</div>
+
+<!-- ── SCRIPTS ── -->
+<script>
+// ── Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12 });
+reveals.forEach(el => obs.observe(el));
+
+// ── Sticky nav
+const stickyNav = document.getElementById('stickyNav');
+window.addEventListener('scroll', () => {
+  stickyNav.classList.toggle('visible', window.scrollY > 500);
+});
+
+// ── FAQ toggle
+function toggleFaq(btn) {
+  const item = btn.parentElement;
+  const allItems = document.querySelectorAll('.faq-item');
+  allItems.forEach(i => { if (i !== item) i.classList.remove('open'); });
+  item.classList.toggle('open');
+}
+
+// ── Countdown timer (24 hours from page load)
+(function() {
+  const stored = localStorage.getItem('cashflow_timer');
+  const end = stored ? parseInt(stored) : Date.now() + 24*60*60*1000;
+  if (!stored) localStorage.setItem('cashflow_timer', end);
+  function update() {
+    const diff = Math.max(0, end - Date.now());
+    const h = String(Math.floor(diff/3600000)).padStart(2,'0');
+    const m = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+    const s = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+    document.getElementById('tHours').textContent = h;
+    document.getElementById('tMins').textContent = m;
+    document.getElementById('tSecs').textContent = s;
+  }
+  update();
+  setInterval(update, 1000);
+})();
+
+// ── Hero canvas: animated dot grid + flowing lines
+(function() {
+  const c = document.getElementById('heroCanvas');
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  let W, H, dots = [], lines = [];
+  function resize() {
+    W = c.width = c.offsetWidth;
+    H = c.height = c.offsetHeight;
+    dots = [];
+    for (let i=0; i<80; i++) {
+      dots.push({ x: Math.random()*W, y: Math.random()*H, r: Math.random()*1.5+0.5, vx: (Math.random()-0.5)*0.3, vy: (Math.random()-0.5)*0.3 });
+    }
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  function draw() {
+    ctx.clearRect(0,0,W,H);
+    // Grid lines
+    ctx.strokeStyle = 'rgba(0,201,167,0.08)';
+    ctx.lineWidth = 1;
+    const gs = 48;
+    for (let x=0; x<W; x+=gs) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+    for (let y=0; y<H; y+=gs) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+    // Dots + connections
+    dots.forEach(d => {
+      d.x = (d.x+d.vx+W)%W;
+      d.y = (d.y+d.vy+H)%H;
+      ctx.beginPath();
+      ctx.arc(d.x,d.y,d.r,0,Math.PI*2);
+      ctx.fillStyle='rgba(0,201,167,0.6)';
+      ctx.fill();
+    });
+    // Connect nearby dots
+    for (let i=0;i<dots.length;i++) for (let j=i+1;j<dots.length;j++) {
+      const dx=dots[i].x-dots[j].x, dy=dots[i].y-dots[j].y, dist=Math.sqrt(dx*dx+dy*dy);
+      if (dist<100) {
+        ctx.beginPath();
+        ctx.moveTo(dots[i].x,dots[i].y);
+        ctx.lineTo(dots[j].x,dots[j].y);
+        ctx.strokeStyle=`rgba(0,201,167,${0.12*(1-dist/100)})`;
+        ctx.lineWidth=1;
+        ctx.stroke();
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ── VSL canvas: geometric abstract
+function drawGeoCanvas(id) {
+  const c = document.getElementById(id);
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  let t = 0;
+  function resize() { c.width = c.offsetWidth; c.height = c.offsetHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  function draw() {
+    const W = c.width, H = c.height;
+    ctx.clearRect(0,0,W,H);
+    // Hexagonal grid pattern
+    const s = 40; const h = s * Math.sqrt(3);
+    ctx.strokeStyle = 'rgba(0,201,167,0.25)';
+    ctx.lineWidth = 1;
+    for (let col = -1; col < W/s+2; col++) {
+      for (let row = -1; row < H/h+2; row++) {
+        const cx = col * s * 1.5 + (Math.sin(t*0.005+row)*3);
+        const cy = row * h + (col%2)*h/2 + (Math.cos(t*0.005+col)*3);
+        ctx.beginPath();
+        for (let i=0;i<6;i++) {
+          const angle = Math.PI/180*(60*i-30);
+          const px = cx+s/2*Math.cos(angle), py = cy+s/2*Math.sin(angle);
+          i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+        }
+        ctx.closePath();
+        ctx.stroke();
+      }
+    }
+    // Flowing arc
+    const grad = ctx.createLinearGradient(0,0,W,H);
+    grad.addColorStop(0,'rgba(0,201,167,0)');
+    grad.addColorStop(0.5,'rgba(0,201,167,0.15)');
+    grad.addColorStop(1,'rgba(0,201,167,0)');
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    for (let x=0;x<=W;x+=4) {
+      const y = H/2 + Math.sin((x/W)*Math.PI*3 + t*0.02)*H*0.15 + Math.cos((x/W)*Math.PI*2 - t*0.015)*H*0.08;
+      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    t++;
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ── Wait canvas: digital pulse
+function drawWaitCanvas() {
+  const c = document.getElementById('waitCanvas');
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  let t = 0;
+  function resize() { c.width = c.offsetWidth; c.height = c.offsetHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  function draw() {
+    const W = c.width, H = c.height;
+    ctx.clearRect(0,0,W,H);
+    // Radial rings
+    const cx = W/2, cy = H/2;
+    for (let i=1;i<=6;i++) {
+      const r = (i/6)*Math.min(W,H)*0.48 + Math.sin(t*0.03+i)*4;
+      ctx.beginPath();
+      ctx.arc(cx,cy,r,0,Math.PI*2);
+      ctx.strokeStyle = `rgba(0,201,167,${0.25-i*0.03})`;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+    // Rotating lines
+    for (let i=0;i<8;i++) {
+      const angle = (i/8)*Math.PI*2 + t*0.01;
+      const r1 = Math.min(W,H)*0.1, r2 = Math.min(W,H)*0.42;
+      ctx.beginPath();
+      ctx.moveTo(cx+r1*Math.cos(angle), cy+r1*Math.sin(angle));
+      ctx.lineTo(cx+r2*Math.cos(angle), cy+r2*Math.sin(angle));
+      ctx.strokeStyle = 'rgba(0,201,167,0.12)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+    t++;
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+drawGeoCanvas('vslCanvas');
+drawGeoCanvas('vid2Canvas');
+drawWaitCanvas();
+</script>
+</body>
+</html>
